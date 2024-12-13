@@ -1,0 +1,28 @@
+name: Auto Versioning and Tagging
+
+on:
+  push:
+    branches:
+      - main  # main 브랜치에 푸시될 때 실행
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the repository
+      uses: actions/checkout@v3
+
+    - name: Bump version and create tag
+      id: bump_version
+      uses: anothrNick/github-tag-action@v1.41.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        default_bump: patch  # 기본적으로 Patch 증가
+        tag_prefix: 'v'      # 태그 접두사 (예: v1.0.0)
+        initial_version: 'v1.0.0'  # 태그가 없을 경우 초기 버전
+    
+    - name: Show new version
+      run: echo "New version created: ${{ steps.bump_version.outputs.new_tag }}"
+
