@@ -23,6 +23,9 @@ jobs:
         tag_prefix: 'v'      # 태그 접두사 (예: v1.0.0)
         initial_version: 'v1.0.0'  # 태그가 없을 경우 초기 버전
     
-    - name: Show new version
-      run: echo "New version created: ${{ steps.bump_version.outputs.new_tag }}"
+- name: Manual version bump
+  run: |
+    git fetch --tags
+    latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+    echo "Latest Tag: $latest_tag"
 
